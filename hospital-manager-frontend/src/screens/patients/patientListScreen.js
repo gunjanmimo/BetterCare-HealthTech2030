@@ -1,36 +1,47 @@
-import React from "react";
-import { Search, AlertCircle } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
+import "./patientListScreen.css";
 
 const PatientListScreen = () => {
-  // Sample data for patients
-  const patients = [
-    { id: 1, name: "John Doe", isInICU: true },
-    { id: 2, name: "Jane Smith", isInICU: false },
-    { id: 3, name: "Mike Johnson", isInICU: true },
-    { id: 4, name: "Alice Brown", isInICU: false },
-    { id: 5, name: "Chris Evans", isInICU: true },
-    { id: 6, name: "Diana Prince", isInICU: false },
-    { id: 7, name: "Bruce Wayne", isInICU: true },
-    { id: 8, name: "Clark Kent", isInICU: false },
-    { id: 9, name: "Barry Allen", isInICU: true },
-    { id: 10, name: "Hal Jordan", isInICU: false },
-    { id: 11, name: "Arthur Curry", isInICU: true },
-    { id: 12, name: "Victor Stone", isInICU: false },
-    { id: 13, name: "Oliver Queen", isInICU: true },
-  ];
+  const [patients, setPatients] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/patients")
+      .then((response) => response.json())
+      .then((data) => {
+        const filteredData = data.map((patient) => ({
+          id: patient.id,
+          name: patient.name,
+          age: patient.age,
+          icu_admitted: patient.icu_admitted,
+          family_members: patient.family_members, // Include family members
+        }));
+        setPatients(filteredData);
+      })
+      .catch((error) => console.error("Error fetching patient data:", error));
+  }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Patient List</h1>
-      <div className="mb-6 relative">
-        <input
-          type="text"
-          placeholder="Search patients..."
-          className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+    <div className="patient-list-screen">
+      <h1>Patient List</h1>
+      <div className="search-container">
+        <input type="text" placeholder="Search patients..." />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="patient-grid">
         {patients.map((patient) => (
           <PatientCard key={patient.id} patient={patient} />
         ))}
@@ -41,28 +52,31 @@ const PatientListScreen = () => {
 
 const PatientCard = ({ patient }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{patient.name}</h3>
-        <p className="text-sm text-gray-600 mb-2">ID: {patient.id}</p>
-        <div
-          className={`flex items-center ${
-            patient.isInICU ? "text-red-500" : "text-green-500"
+    <div className="patient-card">
+      <div className="patient-info">
+        <h3>{patient.name}</h3>
+        <p className="patient-id">ID: {patient.id}</p>
+        <p
+          className={`patient-status ${
+            patient.icu_admitted ? "icu" : "non-icu"
           }`}
         >
-          {patient.isInICU && <AlertCircle className="mr-2" size={16} />}
-          <span className="text-sm font-medium">
-            {patient.isInICU ? "Admitted in ICU" : "Not in ICU"}
-          </span>
-        </div>
+          {patient.icu_admitted ? "Admitted in ICU" : "Not in ICU"}
+        </p>
       </div>
-      <div className="bg-gray-50 px-4 py-3 text-right">
-        <button className="text-sm text-blue-500 hover:text-blue-700 font-medium">
-          View Details
-        </button>
+      <div className="patient-actions">
+        <Link to={`/patient/${patient.id}`} state={{ patient }}>
+          <button>View Details</button>
+        </Link>
       </div>
     </div>
   );
 };
 
-export { PatientListScreen };
+const PatientListScreenWithStyles = () => (
+  <>
+    <PatientListScreen />
+  </>
+);
+
+export { PatientListScreenWithStyles };

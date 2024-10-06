@@ -4,7 +4,8 @@ import { AdminLoginScreen } from "./admin/adminLoginScreen";
 import { ControlPanelScreen } from "./controlPanel/controlPanelScreen";
 import { MessageListScreen } from "./message/messageListScreen";
 import { ConversationScreen } from "./message/conversationScreen";
-import { PatientListScreen } from "./patients/patientListScreen";
+import { PatientListScreenWithStyles } from "./patients/patientListScreen";
+import { PatientDetailScreen } from "./patients/patientDetailScreen";
 
 export {
   ICURegistrationScreen,
@@ -13,5 +14,6 @@ export {
   ControlPanelScreen,
   MessageListScreen,
   ConversationScreen,
-  PatientListScreen,
+  PatientListScreenWithStyles,
+  PatientDetailScreen,
 };

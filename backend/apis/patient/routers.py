@@ -1,3 +1,4 @@
+import time
 from fastapi import Depends
 from fastapi import APIRouter, HTTPException
 
@@ -30,13 +31,46 @@ async def patient_registration(payload: PatientRegistrationPayload, db=Depends(g
     return {"message": "Patient registered successfully", "patient_id": patient.id}
 
 
+@patient_router.post("/api/patient/{patient_id}/update_icu_status")
+async def update_icu_status(patient_id: int, db=Depends(get_db)):
+    try:
+        patient = db.query(Patient).filter(Patient.id == patient_id).first()
+        if not patient:
+            raise HTTPException(status_code=400, detail="Patient not found")
+
+        patient.icu_admitted = not patient.icu_admitted
+
+        db.commit()
+
+        return {"message": "ICU status updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # get all patient list -> name and id
-@patient_router.get("/api/patient")
+@patient_router.get("/api/patients")
 async def get_all_patients(db=Depends(get_db)):
     # TODO: ADD PAGINATION
     try:
         patients = db.query(Patient).all()
-        return [{"id": patient.id, "name": patient.name} for patient in patients]
+        return [
+            {
+                "id": patient.id,
+                "name": patient.name,
+                "age": patient.age,
+                "icu_admitted": patient.icu_admitted,
+                "family_members": [
+                    {
+                        "name": member.name,
+                        "age": member.age,
+                        "relation": member.relation,
+                        "id": member.id,
+                    }
+                    for member in patient.family_members
+                ],
+            }
+            for patient in patients
+        ]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

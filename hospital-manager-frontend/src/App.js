@@ -8,7 +8,8 @@ import {
   ControlPanelScreen,
   MessageListScreen,
   ConversationScreen,
-  PatientListScreen,
+  PatientListScreenWithStyles,
+  PatientDetailScreen,
 } from "./screens/index"; // Ensure this is the correct import path
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Import Router components
 
@@ -32,7 +33,11 @@ function App() {
           element={<ConversationScreen />}
         />
 
-        <Route path="/admitted-patients" element={<PatientListScreen />} />
+        <Route
+          path="/admitted-patients"
+          element={<PatientListScreenWithStyles />}
+        />
+        <Route path="/patient/:id" element={<PatientDetailScreen />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,112 @@
+.patient-list-screen {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.search-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-container svg {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.patient-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.patient-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.patient-info {
+  padding: 15px;
+}
+
+.patient-info h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.patient-id {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.patient-status {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.patient-status.icu {
+  color: #e53e3e;
+}
+
+.patient-status.non-icu {
+  color: #38a169;
+}
+
+.patient-status svg {
+  margin-right: 5px;
+}
+
+.patient-actions {
+  background-color: #f7f7f7;
+  padding: 10px 15px;
+  text-align: right;
+}
+
+.patient-actions button {
+  background-color: transparent;
+  border: none;
+  color: #4299e1;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.patient-actions button:hover {
+  color: #2b6cb0;
+}
+
+@media (max-width: 768px) {
+  .patient-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

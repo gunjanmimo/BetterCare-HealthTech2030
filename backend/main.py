@@ -1,11 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+import asyncio
 
 # ------------------------------ LOCAL IMPORTS ------------------------------#
 from backend.database import Admin, get_db, engine, Base
 from backend.apis.admin.routes import admin_router
 from backend.apis.patient.routers import patient_router
+from backend.background_tasks.telebot_fetcher import (
+    fetch_updates,
+    periodic_update_check,
+)
 
 app = FastAPI()
 app.add_middleware(
@@ -36,3 +41,6 @@ async def startup_event():
         print(f"Error creating admin: {e}")
     finally:
         db.close()
+
+    # Start the background task
+    asyncio.create_task(periodic_update_check())

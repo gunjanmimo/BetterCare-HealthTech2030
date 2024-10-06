@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./registrationForm.css"; // Import the CSS file for styling
 
 const PatientRegistrationScreen = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     patientName: "",
     age: "",
@@ -22,17 +26,66 @@ const PatientRegistrationScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send data to backend
-    console.log(formData);
+
+    // Construct the family member object based on form data
+    const familyMember = {
+      name: formData.familyContact,
+      age: formData.age, // Assuming family member's age is captured here, you may want to adjust this
+      relation: formData.relationship,
+    };
+
+    // Create the request body
+    const requestBody = {
+      name: formData.patientName,
+      age: formData.age,
+      family_members: [familyMember], // Assuming only one family member for now
+    };
+
+    // Make the POST request to the backend
+    fetch("http://localhost:8000/api/patient/patient_registration", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        navigate("/admin/control-panel");
+
+        // Handle success (e.g., show a success message, clear form, etc.)
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle error (e.g., show an error message)
+      });
   };
-  const handleLanguageChange = (language) => {
+
+  // const handleLanguageChange = (language) => {
+  //   setFormData({
+  //     ...formData,
+  //     preferredLanguage: language,
+  //   });
+  // };
+
+  // const handleRelationshipChange = (relationship) => {
+  //   setFormData({
+  //     ...formData,
+  //     relationship: relationship,
+  //   });
+  // };
+
+  const handleLanguageChange = (e, language) => {
+    e.preventDefault(); // Prevent form submission
     setFormData({
       ...formData,
       preferredLanguage: language,
     });
   };
 
-  const handleRelationshipChange = (relationship) => {
+  const handleRelationshipChange = (e, relationship) => {
+    e.preventDefault(); // Prevent form submission
     setFormData({
       ...formData,
       relationship: relationship,
@@ -98,7 +151,7 @@ const PatientRegistrationScreen = () => {
                   className={`language-button ${
                     formData.preferredLanguage === language ? "active" : ""
                   }`}
-                  onClick={() => handleLanguageChange(language)}
+                  onClick={(e) => handleLanguageChange(e, language)} // Pass the event
                 >
                   {language}
                 </button>
@@ -116,15 +169,15 @@ const PatientRegistrationScreen = () => {
                 "Sister",
                 "Son",
                 "Daughter",
-              ].map((language) => (
+              ].map((relation) => (
                 <button
-                  key={language}
+                  key={relation}
                   className={`language-button ${
-                    formData.preferredLanguage === language ? "active" : ""
+                    formData.relationship === relation ? "active" : ""
                   }`}
-                  onClick={() => handleLanguageChange(language)}
+                  onClick={(e) => handleRelationshipChange(e, relation)} // Pass the event
                 >
-                  {language}
+                  {relation}
                 </button>
               ))}
             </div>
