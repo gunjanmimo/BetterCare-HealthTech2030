@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../registration/registrationForm.css"; // Import the CSS file for styling
 
 const AdminLoginScreen = () => {
@@ -6,7 +7,7 @@ const AdminLoginScreen = () => {
     adminUsername: "",
     adminPassword: "",
   });
-
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -17,7 +18,6 @@ const AdminLoginScreen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = {
       username: formData.adminUsername,
       password: formData.adminPassword,
@@ -36,6 +36,7 @@ const AdminLoginScreen = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
+        navigate("/admin/control-panel");
       } else {
         const errorData = await response.json();
         console.error("Login failed:", errorData);

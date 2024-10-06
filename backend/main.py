@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 # ------------------------------ LOCAL IMPORTS ------------------------------#
 from backend.database import Admin, get_db, engine, Base
 from backend.apis.admin.routes import admin_router
-
+from backend.apis.patient.routers import patient_router
+from backend.apis.bot.routers import bot_router
 
 app = FastAPI()
 app.add_middleware(
@@ -20,6 +21,8 @@ app.add_middleware(
 
 # REGISTER ROUTERS
 app.include_router(admin_router)
+app.include_router(patient_router)
+app.include_router(bot_router)
 
 
 @app.on_event("startup")

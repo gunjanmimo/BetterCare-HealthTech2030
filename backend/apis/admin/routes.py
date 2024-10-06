@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends
 from backend.apis.admin.schemas import AdminLoginPayload
 from fastapi import APIRouter, HTTPException
 
 # ------------------------------ LOCAL IMPORTS ------------------------------#
-from backend.database import Admin, get_db
+from backend.database import Admin, get_db, Patient, FamilyMember
 
 admin_router = APIRouter()
 

@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   api:
     container_name: backend
@@ -31,3 +33,13 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
+  ngrok:
+    image: wernight/ngrok
+    restart: always
+    ports:
+      - "4040:4040" # Optional: Expose ngrok web interface
+    environment:
+      NGROK_AUTH: 2TotUK3LZvl3UpzaqoPrUgecrgb_4WQpi1x63HkGgVPZv4oPL # Replace with your ngrok auth token
+      NGROK_PORT: api:8000 # Point to your backend service
+    command: ngrok http api:8000
