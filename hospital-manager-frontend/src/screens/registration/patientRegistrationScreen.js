@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import "./registrationForm.css"; // Import the CSS file for styling
 
 const PatientRegistrationScreen = () => {
@@ -9,11 +7,10 @@ const PatientRegistrationScreen = () => {
     age: "",
     medicalHistory: "",
     familyContact: "",
-    contactNumber: "",
+    whatsappNumber: "",
     preferredLanguage: "",
-    relationshipType: "",
+    relationship: "",
   });
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,60 +20,24 @@ const PatientRegistrationScreen = () => {
     });
   };
 
-  const handleLanguageSelect = (language) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission, e.g., send data to backend
+    console.log(formData);
+  };
+  const handleLanguageChange = (language) => {
     setFormData({
       ...formData,
       preferredLanguage: language,
     });
   };
-  const handleRelationshipSelect = (relationship) => {
+
+  const handleRelationshipChange = (relationship) => {
     setFormData({
       ...formData,
-      relationshipType: relationship, // Update relationship type
+      relationship: relationship,
     });
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Prepare the payload for the API call
-    const payload = {
-      name: formData.patientName,
-      age: formData.age,
-      family_members: [
-        {
-          name: formData.familyContact,
-          age: 10,
-          relation: formData.relationshipType,
-        },
-      ],
-    };
-
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/patient/patient_registration",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (response.ok) {
-        // Handle successful response
-        console.log("Patient registration successful");
-        navigate("/admin/control-panel");
-      } else {
-        // Handle error response
-        console.error("Failed to register patient");
-      }
-    } catch (error) {
-      console.error("Error during registration:", error);
-    }
-  };
-
   return (
     <div className="container">
       <div className="form-wrapper">
@@ -117,12 +78,12 @@ const PatientRegistrationScreen = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="contactNumber">Family Contact Number</label>
+            <label htmlFor="whatsappNumber">Family Contact Number</label>
             <input
               type="tel"
-              name="contactNumber"
-              id="contactNumber"
-              value={formData.contactNumber}
+              name="whatsappNumber"
+              id="whatsappNumber"
+              value={formData.whatsappNumber}
               onChange={handleInputChange}
               required
             />
@@ -134,43 +95,40 @@ const PatientRegistrationScreen = () => {
               {["English", "Spanish", "Catalan"].map((language) => (
                 <button
                   key={language}
-                  type="button"
                   className={`language-button ${
                     formData.preferredLanguage === language ? "active" : ""
                   }`}
-                  onClick={() => handleLanguageSelect(language)}
+                  onClick={() => handleLanguageChange(language)}
                 >
                   {language}
                 </button>
               ))}
             </div>
           </div>
-          <div>
-            <label>Relationship with Patient</label>
-
+          <div className="form-group">
+            <label className="form-label">Relation with patient</label>
             <div className="button-group">
               {[
                 "Spouse",
-                "Children",
                 "Mother",
                 "Father",
-                "Sister",
                 "Brother",
+                "Sister",
+                "Son",
+                "Daughter",
               ].map((language) => (
                 <button
                   key={language}
-                  type="button"
                   className={`language-button ${
-                    formData.relationshipType === language ? "active" : ""
+                    formData.preferredLanguage === language ? "active" : ""
                   }`}
-                  onClick={() => handleRelationshipSelect(language)}
+                  onClick={() => handleLanguageChange(language)}
                 >
                   {language}
                 </button>
               ))}
             </div>
           </div>
-
           <div className="form-submit">
             <button type="submit">Submit</button>
           </div>

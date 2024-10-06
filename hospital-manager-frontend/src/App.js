@@ -6,6 +6,9 @@ import {
   PatientRegistrationScreen,
   AdminLoginScreen,
   ControlPanelScreen,
+  MessageListScreen,
+  ConversationScreen,
+  PatientListScreen,
 } from "./screens/index"; // Ensure this is the correct import path
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Import Router components
 
@@ -13,16 +16,23 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AdminLoginScreen />} />{" "}
+        <Route path="/" element={<AdminLoginScreen />} />
         <Route path="/admin/control-panel" element={<ControlPanelScreen />} />
         <Route
           path="/patient-registration"
           element={<PatientRegistrationScreen />}
         />
         <Route
-          path="/admin//icu-registration"
+          path="/admin/icu-registration"
           element={<ICURegistrationScreen />}
         />
+        <Route path="/message-list" element={<MessageListScreen />} />
+        <Route
+          path="/conversation-screen/:id"
+          element={<ConversationScreen />}
+        />
+
+        <Route path="/admitted-patients" element={<PatientListScreen />} />
       </Routes>
     </Router>
   );

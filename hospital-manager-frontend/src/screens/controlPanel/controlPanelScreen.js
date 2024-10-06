@@ -30,7 +30,7 @@ const ControlPanelScreen = () => {
         </button>
         <button
           className="control-button"
-          onClick={handleNavigation("/family-messages")}
+          onClick={handleNavigation("/message-list")}
         >
           Family Messages
         </button>
