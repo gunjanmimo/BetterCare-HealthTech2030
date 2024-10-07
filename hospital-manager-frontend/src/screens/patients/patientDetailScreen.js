@@ -45,6 +45,7 @@ const PatientDetailScreen = () => {
             <p>Name: {member.name}</p>
             <p>Age: {member.age}</p>
             <p>Relation: {member.relation}</p>
+            <p>Relation: {member.id}</p>
           </div>
         ))}
       </div>

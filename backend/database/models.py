@@ -1,5 +1,14 @@
 import random
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    Boolean,
+    DateTime,
+    func,
+    BigInteger,
+)
 
 from sqlalchemy.orm import relationship
 from .database_connector import Base
@@ -27,8 +36,8 @@ class Message(Base):
     )  # Automatically set to current timestamp
     family_member_id = Column(Integer, ForeignKey("family_members.id"), nullable=False)
     patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
-    chat_id = Column(Integer, nullable=False)  # Added chat_id for each message
-
+    chat_id = Column(BigInteger, nullable=False)  # Added chat_id for each message
+    sender_name = Column(String, nullable=False)
     # Relationships
     family_member = relationship("FamilyMember", back_populates="messages")
     patient = relationship("Patient", back_populates="messages")
@@ -42,7 +51,7 @@ class FamilyMember(Base):
     age = Column(Integer, nullable=False)
     relation = Column(String, nullable=False)
     patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
-    chat_id = Column(Integer, nullable=True)  # Added chat_id for each family member
+    chat_id = Column(BigInteger, nullable=True)  # Added chat_id for each family member
 
     # Relationships
     patient = relationship("Patient", back_populates="family_members")

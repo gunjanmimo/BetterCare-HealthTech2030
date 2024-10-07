@@ -29,7 +29,7 @@ function App() {
         />
         <Route path="/message-list" element={<MessageListScreen />} />
         <Route
-          path="/conversation-screen/:id"
+          path="/conversation-screen/:patient_id"
           element={<ConversationScreen />}
         />
 

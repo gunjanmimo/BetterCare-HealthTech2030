@@ -12,7 +12,11 @@ patient_router = APIRouter()
 @patient_router.post("/api/patient/patient_registration")
 async def patient_registration(payload: PatientRegistrationPayload, db=Depends(get_db)):
 
-    patient = Patient(name=payload.name, age=payload.age)
+    patient = Patient(
+        name=payload.name,
+        age=payload.age,
+        icu_admitted=True,
+    )
     db.add(patient)
     db.flush()
 

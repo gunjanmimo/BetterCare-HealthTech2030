@@ -11,6 +11,7 @@ from backend.background_tasks.telebot_fetcher import (
     fetch_updates,
     periodic_update_check,
 )
+from backend.apis.message.routers import message_router
 
 app = FastAPI()
 app.add_middleware(
@@ -26,6 +27,7 @@ app.add_middleware(
 # REGISTER ROUTERS
 app.include_router(admin_router)
 app.include_router(patient_router)
+app.include_router(message_router)
 
 
 @app.on_event("startup")
